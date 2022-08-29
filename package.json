@@ -1,0 +1,13 @@
+{
+  "name": "designer-baby",
+  "version": "1.0.0",
+  "description": "A video player with corresponding shader effect.",
+  "scripts": {
+    "dev": "http-server",
+    "deploy": "npx netlify deploy"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "netlify-cli": "^11.5.1"
+  }
+}
