@@ -1,3 +1,5 @@
+/* General Layout */ 
+
 html,
 body {
 	margin: 0;
@@ -13,6 +15,14 @@ body {
 	touch-action: manipulation;
 }
 
+video {
+	transition: 1s opacity ease-in;
+}
+
+.hidden {
+	display: none;
+}
+
 .fit-size {
 	width: 100% !important;
 	height: 100% !important;
@@ -20,9 +30,8 @@ body {
 	position: fixed;
 }
 
-video {
-	width: 100%;
-	transition: 1s opacity ease-in;
+#cover {
+	transition: 0.25s opacity ease-in;
 }
 
 #wrapper {
@@ -32,6 +41,38 @@ video {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+/* Body States */
+
+body.loading video {
+	filter: brightness(0.5);
+}
+
+body.loading #play {
+	display: none;
+}
+
+body.ready {
+	cursor: pointer;
+}
+
+body.ready canvas {
+	display: none;
+}
+
+body.playing video, body.playing #cover {
+	opacity: 0;
+}
+
+body.ready:active #play img {
+	transform: scale(0.95);
+}
+
+/* Cover Image */
+
+#cover {
+	pointer-events: none;
 }
 
 /* Play Button */
@@ -62,28 +103,4 @@ video {
 
 #play img:nth-child(2) {
 	filter: brightness(1);
-}
-
-body.loading video {
-	filter: brightness(0.5);
-}
-
-body.loading #play {
-	display: none;
-}
-
-body.ready {
-	cursor: pointer;
-}
-
-body.ready canvas {
-	display: none;
-}
-
-body.playing video {
-	opacity: 0;
-}
-
-body.ready:active #play img {
-	transform: scale(0.95);
 }

@@ -1,12 +1,12 @@
 ***Harbingers Player***
 
 ⚙️ TODO
-- [] Fix zooming video issue.
-- [] Fix vertical centering issue on https://feralfile2.dev.bitmark.com/artworks/baby-video-xk5.
+- [🟢] Fix vertical centering issue on https://feralfile2.dev.bitmark.com/artworks/baby-video-xk5.
 - [] Add play / pause.
   - [] Animate a smooth zooming pause symbol?
   - [] See if the shader can be paused.
 - [] Add scrubbable progress bar.
+- [x] Fix zooming video issue.
 - [x] Add to a repo and hook up to netlify.
 
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A video player for the Feral File Harbingers exhibition, with corresponding shader effect by @mxsage.",
   "scripts": {
-    "dev": "http-server",
+    "dev": "http-server public --cors -c-1 -i",
     "deploy": "npx netlify deploy --prod -d public; npx netlify watch"
   },
   "devDependencies": {

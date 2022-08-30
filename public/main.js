@@ -2,8 +2,9 @@
 // Loads a video from `parameters` and applies the effect. Also handles the
 // playback interface.
 
-const cover = document.querySelector("#cover");
+const wrapper = document.querySelector("#wrapper");
 const video = document.querySelector("video");
+const cover = document.querySelector("#cover");
 const play = document.querySelector("#play");
 
 let copyVideo = false;
@@ -12,6 +13,8 @@ let copyVideo = false;
 // Assumes its in mp4 and webp format.
 function setupVideo(url) {
   video.src = "assets/" + url + ".mp4";
+
+  cover.onload = () => cover.classList.remove('hidden');
   cover.src = "assets/" + url + ".webp";
 
   video.width = params.width;
@@ -22,7 +25,7 @@ function setupVideo(url) {
   video.oncanplaythrough = () => {
     document.body.classList.remove("loading");
     document.body.classList.add("ready");
-    video.onclick = () => {
+    wrapper.onclick = () => {
       video.play();
       video.addEventListener(
         "playing",
