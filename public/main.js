@@ -3,48 +3,26 @@ let copyVideo = false;
 const video = document.querySelector("video");
 const play = document.querySelector("#play");
 
-function setupVideo(url) {
-  let playing = false;
-  let timeupdate = false;
-
-  video.loop = true;
-
-  video.addEventListener(
-    "playing",
-    function () {
-      playing = true;
-      checkReady();
-    },
-    true
-  );
-
-  video.addEventListener(
-    "timeupdate",
-    function () {
-      timeupdate = true;
-      checkReady();
-    },
-    true
-  );
-
-  video.src = url;
-  video.load();
-
+function setupVideo() {
   video.oncanplaythrough = () => {
-    document.body.classList.remove('loading');
-    document.body.classList.add('ready');
+    document.body.classList.remove("loading");
+    document.body.classList.add("ready");
     video.onclick = () => {
-      document.body.classList.remove('ready');
-      document.body.classList.add('playing');
-      play.classList.add("played");
       video.play();
+      video.addEventListener(
+        "playing",
+        () => {
+          copyVideo = true;
+          document.body.classList.remove("ready");
+          document.body.classList.add("playing");
+          play.classList.add("played");
+        },
+        { once: true }
+      );
     };
   };
 
-  function checkReady() {
-    if (playing && timeupdate) copyVideo = true;
-  }
-
+  video.load();
   return video;
 }
 
@@ -63,7 +41,7 @@ function calcDistortion(maxDistortion, provenanceLength) {
   return distortion;
 }
 
-function initTexture(gl, url) {
+function initTexture(gl) {
   const texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -130,8 +108,6 @@ function main(provenanceLength) {
     provenanceLength
   );
 
-  params.distortionAmount = 0.75;
-
   function updateDisplaySize() {
     let strW = parseInt(params.simSizeX * params.displaySize);
     canvas.style.width = strW + "px";
@@ -174,8 +150,8 @@ function main(provenanceLength) {
 }
 
 window.addEventListener("provenance-request-error", function (event) {
-  console.log("fail to get provenance:", event.detail.error);
-  main(0);
+  console.warn("Failed to get provenance, testing with provenance length of 3...", event);
+  main(3);
 });
 
 window.addEventListener("provenance-ready", function (event) {

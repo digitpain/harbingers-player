@@ -66,12 +66,20 @@ video {
 	filter: brightness(1);
 }
 
+body.loading video {
+	filter: brightness(0.5);
+}
+
 body.loading #play {
 	display: none;
 }
 
 body.ready {
 	cursor: pointer;
+}
+
+body.ready canvas {
+	display: none;
 }
 
 body.playing video {

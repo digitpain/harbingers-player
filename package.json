@@ -4,7 +4,7 @@
   "description": "A video player with corresponding shader effect.",
   "scripts": {
     "dev": "http-server",
-    "deploy": "npx netlify deploy"
+    "deploy": "npx netlify deploy --prod -d public; npx netlify watch"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
