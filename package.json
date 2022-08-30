@@ -1,7 +1,7 @@
 {
-  "name": "designer-baby",
+  "name": "harbingers-player",
   "version": "1.0.0",
-  "description": "A video player with corresponding shader effect.",
+  "description": "A video player for the Feral File Harbingers exhibition, with corresponding shader effect by @mxsage.",
   "scripts": {
     "dev": "http-server",
     "deploy": "npx netlify deploy --prod -d public; npx netlify watch"
