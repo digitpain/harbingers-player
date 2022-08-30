@@ -1,6 +1,10 @@
+// ✴️ Parameters
+// These defaults should be adjusted for each piece. 
+
 const params = {
-  simSizeX: 1920 / 2, // should fetch the width of the video
-  simSizeY: 1920 / 2, // should fetch the height of the video
+  videoName: "designer-baby",
+  width: 1920 / 2, // should fetch the width of the video
+  height: 1920 / 2, // should fetch the height of the video
   distortionAmount: 0.7542, // to be set based on the piece and transaction history
   style: 0.7583, // to be set based on the piece and transaction history
   mouseX: 450,

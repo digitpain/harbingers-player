@@ -1,3 +1,6 @@
+// Effect
+// A deteriorating glsl effect created by @mxsage.
+
 const glsl = (x) => x;
 
 const passthroughFrag = glsl`\
@@ -292,7 +295,7 @@ class Blur {
 
     this.vao = this._initVertexArray();
     this.textures = new Array(2);
-    const randArray = this._randomData(params.simSizeX * params.simSizeY * 4);
+    const randArray = this._randomData(params.width * params.height * 4);
 
     for (let i = 0; i < this.textures.length; i++) {
       this.textures[i] = this._loadTexture(randArray);
@@ -350,8 +353,8 @@ class Blur {
       );
       this.gl.uniform2f(
         this.gu(this.updateBlur, "uTextureSize"),
-        this.params.simSizeX,
-        this.params.simSizeY
+        this.params.width,
+        this.params.height
       );
       this.gl.uniform1f(this.gu(this.updateBlur, "decay"), this.params.decay);
       this.gl.uniform1i(this.gu(this.updateBlur, "blur"), i);
@@ -361,7 +364,7 @@ class Blur {
       );
       this.gl.uniform1f(this.gu(this.updateBlur, "style"), this.params.style);
 
-      this.gl.viewport(0, 0, this.params.simSizeX, this.params.simSizeY);
+      this.gl.viewport(0, 0, this.params.width, this.params.height);
       this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
       this.gl.clear(this.gl.COLOR_BUFFER_BIT);
       this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
@@ -400,8 +403,8 @@ class Blur {
 
     this.gl.uniform2f(
       this.drawProgramLocations.uniform.uTextureSize,
-      this.params.simSizeX,
-      this.params.simSizeY
+      this.params.width,
+      this.params.height
     );
 
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -416,8 +419,8 @@ class Blur {
       this.gl.TEXTURE_2D,
       0,
       this.gl.RGBA32F,
-      this.params.simSizeX,
-      this.params.simSizeY,
+      this.params.width,
+      this.params.height,
       0,
       this.gl.RGBA,
       this.gl.FLOAT,
@@ -509,8 +512,8 @@ class Blur {
       this.gl.TEXTURE_2D,
       0,
       this.gl.RGBA32F,
-      this.params.simSizeX,
-      this.params.simSizeY,
+      this.params.width,
+      this.params.height,
       0,
       this.gl.RGBA,
       this.gl.FLOAT,

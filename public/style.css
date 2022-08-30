@@ -17,13 +17,11 @@ body {
 	width: 100% !important;
 	height: 100% !important;
 	object-fit: contain;
+	position: fixed;
 }
 
 video {
 	width: 100%;
-	position: absolute;
-	top: 0;
-	left: 0;
 	transition: 1s opacity ease-in;
 }
 

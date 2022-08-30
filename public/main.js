@@ -1,9 +1,24 @@
-let copyVideo = false;
+// 🏠 Main
+// Loads a video from `parameters` and applies the effect. Also handles the
+// playback interface.
 
+const cover = document.querySelector("#cover");
 const video = document.querySelector("video");
 const play = document.querySelector("#play");
 
-function setupVideo() {
+let copyVideo = false;
+
+// Loads a video from params given it's name, along with it's cover image.
+// Assumes its in mp4 and webp format.
+function setupVideo(url) {
+  video.src = "assets/" + url + ".mp4";
+  cover.src = "assets/" + url + ".webp";
+
+  video.width = params.width;
+  video.height = params.height;
+  video.style.maxWidth = params.width + "px";
+  video.style.maxHeight = params.height + "px";
+
   video.oncanplaythrough = () => {
     document.body.classList.remove("loading");
     document.body.classList.add("ready");
@@ -26,7 +41,7 @@ function setupVideo() {
   return video;
 }
 
-// calcDistortion returns a distortion value by max distortion and provenance length
+// Returns a distortion value by max distortion and provenance length.
 function calcDistortion(maxDistortion, provenanceLength) {
   const MAX_PROVENANCE_LENGTH = 10;
   let distortion = 0.0;
@@ -96,12 +111,8 @@ function main(provenanceLength) {
     return;
   }
 
-  function setSimSize() {
-    canvas.width = params.simSizeX;
-    canvas.height = params.simSizeY;
-  }
-
-  setSimSize();
+  canvas.width = params.width;
+  canvas.height = params.height;
 
   params.distortionAmount = calcDistortion(
     params.distortionAmount,
@@ -109,10 +120,10 @@ function main(provenanceLength) {
   );
 
   function updateDisplaySize() {
-    let strW = parseInt(params.simSizeX * params.displaySize);
+    let strW = parseInt(params.width * params.displaySize);
     canvas.style.width = strW + "px";
     canvas.style.maxWidth = strW + "px";
-    let strH = parseInt(params.simSizeY * params.displaySize);
+    let strH = parseInt(params.height * params.displaySize);
     canvas.style.height = strH + "px";
     canvas.style.maxHeight = strH + "px";
   }
@@ -123,8 +134,8 @@ function main(provenanceLength) {
 
   const createInitTexture = function () {
     let uvTexture = [];
-    for (let i = 0; i < params.simSizeX; i++) {
-      for (let j = 0; j < params.simSizeY; j++) {
+    for (let i = 0; i < params.width; i++) {
+      for (let j = 0; j < params.height; j++) {
         u = 0;
         v = 0;
         uvTexture.push(u, v);
@@ -150,7 +161,10 @@ function main(provenanceLength) {
 }
 
 window.addEventListener("provenance-request-error", function (event) {
-  console.warn("Failed to get provenance, testing with provenance length of 3...", event);
+  console.warn(
+    "Failed to get provenance, testing with provenance length of 3...",
+    event
+  );
   main(3);
 });
 
