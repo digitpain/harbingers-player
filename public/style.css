@@ -32,6 +32,7 @@ video {
 
 #cover {
 	transition: 0.25s opacity ease-in;
+	filter: brightness(0.5);
 }
 
 #wrapper {
@@ -57,7 +58,7 @@ body.ready {
 	cursor: pointer;
 }
 
-body.ready canvas {
+body.ready canvas, body.ready #cover {
 	display: none;
 }
 
@@ -81,6 +82,14 @@ body.ready:active #play img {
 	opacity: 0;
 	transform: scale(2);
 	transition: 0.25s opacity, 0.25s transform;
+}
+
+#play.subtle img:first-child {
+	display: none;
+}
+
+#play.subtle img:last-child {
+	opacity: 0.5;
 }
 
 #play {

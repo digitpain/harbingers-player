@@ -14,7 +14,7 @@ let copyVideo = false;
 function setupVideo(url) {
   video.src = "assets/" + url + ".mp4";
 
-  cover.onload = () => cover.classList.remove('hidden');
+  cover.onload = () => cover.classList.remove("hidden");
   cover.src = "assets/" + url + ".webp";
 
   video.width = params.width;
@@ -25,6 +25,8 @@ function setupVideo(url) {
   video.oncanplaythrough = () => {
     document.body.classList.remove("loading");
     document.body.classList.add("ready");
+
+    // 1. First playback.
     wrapper.onclick = () => {
       video.play();
       video.addEventListener(
@@ -34,6 +36,21 @@ function setupVideo(url) {
           document.body.classList.remove("ready");
           document.body.classList.add("playing");
           play.classList.add("played");
+
+          // 2. Pause
+          wrapper.onclick = () => {
+            if (!video.paused) {
+              video.pause();
+
+              play.classList.remove("played");
+              play.classList.add("subtle");
+
+            } else {
+              video.play();
+              play.classList.add("played");
+            }
+          };
+
         },
         { once: true }
       );
@@ -153,7 +170,7 @@ function main(provenanceLength) {
   const video = setupVideo(params.videoName);
 
   const render = function () {
-    if (copyVideo) {
+    if (copyVideo && !video.paused) {
       updateTexture(gl, texture, video);
       blur.draw(texture);
     }

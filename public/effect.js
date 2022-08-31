@@ -371,7 +371,8 @@ class Blur {
 
       // swap read and write textures
       this.textures = [this.textures[1], this.textures[0]];
-      this.frameNum++;
+
+      this.frameNum += 1;
     }
   }
 
