@@ -47,31 +47,24 @@ function setupVideo(url) {
               let lastX;
 
               wrapper.addEventListener("pointerdown", (e) => {
-                console.log('down');
                 if (!e.isPrimary) return;
                 isDown = true;
                 lastX = e.x;
               });
 
               wrapper.addEventListener("pointermove", (e) => {
-                console.log('move');
                 if (!e.isPrimary) return;
                 if (!isDown) return;
                 scrubbing = true;
                 wrapper.classList.add("scrubbing");
                 video.pause();
-
                 const deltaX = e.x - lastX;
                 lastX = e.x;
-
-                console.log(deltaX);
-
                 const currentWidth = parseFloat(progress.style.width);
                 progress.style.width = currentWidth + deltaX + "px";
               });
 
-              wrapper.addEventListener("pointerup", (e) => {
-                console.log('up');
+              window.addEventListener("pointerup", (e) => {
                 if (!e.isPrimary) return;
                 isDown = false;
                 if (scrubbing) {
@@ -92,7 +85,13 @@ function setupVideo(url) {
                     play.classList.add("played");
                   }
                   wrapper.classList.remove("scrubbing");
-                } else {
+                }
+              });
+
+              wrapper.addEventListener("pointerup", (e) => {
+                if (!e.isPrimary) return;
+                isDown = false;
+                if (!scrubbing) {
                   // Play & Pause
                   if (!video.paused) {
                     video.pause();
@@ -242,7 +241,7 @@ function main(provenanceLength) {
             (video.currentTime / video.duration) * wrapper.clientWidth
           ) + "px";
       }
-    lastVideoTime = video.currentTime;
+      lastVideoTime = video.currentTime;
     }
     requestAnimationFrame(render);
   };

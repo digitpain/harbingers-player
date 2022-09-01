@@ -135,6 +135,11 @@ body.ready:active #play img {
 	left: 0;
 	cursor: ew-resize;
 	background: transparent;
+	display: none;
+}
+
+body.playing #scrub-bar {
+	display: block;
 }
 
 #scrub-bar:hover #progress, #wrapper.scrubbing #progress {
