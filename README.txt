@@ -2,9 +2,8 @@
 
 ⚙️ TODO
 - [] Incorporate all the videos from the exhibition. 
-  - [] Transcribe each video.
+  - [] Transcribe each video and add to the repo.
   - [] Generate a still for each video.
-- [x] Better preloader feel on the <img> tag?
 - [x] Add scrubbable progress bar.
 - [x] Add pause functionality.
   - [x] See if the shader can be paused.

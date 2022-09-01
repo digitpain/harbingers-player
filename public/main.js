@@ -19,6 +19,11 @@ function setupVideo(url) {
   cover.onload = () => cover.classList.remove("hidden");
   cover.src = "assets/" + url + ".webp";
 
+  cover.width = params.width;
+  cover.height = params.height;
+  cover.style.maxWidth = params.width + "px";
+  cover.style.maxHeight = params.height + "px";
+
   video.width = params.width;
   video.height = params.height;
   video.style.maxWidth = params.width + "px";
