@@ -85,16 +85,6 @@ body.ready:active #play img {
 	pointer-events: none;
 }
 
-body.loading #cover {
-	animation: preload 0.25s infinite;
-}
-
-@keyframes preload {
-	0%   { opacity: 1; }
-  50%  { opacity: 0.75; }
-  100% { opacity: 1; }
-}
-
 /* Play Button */
 
 #play.played {
