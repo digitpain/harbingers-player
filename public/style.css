@@ -6,13 +6,14 @@ body {
 	padding: 0;
 	width: 100%;
 	height: 100%;
+	user-select: none;
 }
 
 body {
 	position: relative;
 	background-color: black;
 	overflow: hidden;
-	touch-action: manipulation;
+	touch-action: none;
 }
 
 video {
@@ -44,6 +45,10 @@ video {
 	align-items: center;
 }
 
+#wrapper.scrubbing {
+	cursor: ew-resize !important;
+}
+
 /* Body States */
 
 body.loading video {
@@ -66,6 +71,10 @@ body.playing video, body.playing #cover {
 	opacity: 0;
 }
 
+body.paused #wrapper {
+	cursor: pointer;
+}
+
 body.ready:active #play img {
 	transform: scale(0.95);
 }
@@ -74,6 +83,16 @@ body.ready:active #play img {
 
 #cover {
 	pointer-events: none;
+}
+
+body.loading #cover {
+	animation: preload 0.25s infinite;
+}
+
+@keyframes preload {
+	0%   { opacity: 1; }
+  50%  { opacity: 0.75; }
+  100% { opacity: 1; }
 }
 
 /* Play Button */
@@ -90,6 +109,7 @@ body.ready:active #play img {
 
 #play.subtle img:last-child {
 	opacity: 0.5;
+	transform: scale(2);
 }
 
 #play {
@@ -112,4 +132,40 @@ body.ready:active #play img {
 
 #play img:nth-child(2) {
 	filter: brightness(1);
+}
+
+/* Progress Bar */
+
+#scrub-bar {
+	width: 100%;
+	height: 6vmin; 
+	background: transparent; 
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	cursor: ew-resize;
+	background: transparent;
+}
+
+#scrub-bar:hover #progress, #wrapper.scrubbing #progress {
+	height: 1vmin;
+	opacity: 1.0;
+}
+
+body.paused #progress {
+	height: 1vmin;
+	opacity: 0.5; 
+}
+
+#progress {
+	position: absolute;
+	bottom: 0;
+	height: 1vmin;
+	background: white;
+	opacity: 0.0; 
+}
+
+/* Progress Bar & Play Interaction */
+#wrapper.scrubbing #play.subtle img:last-child {
+	opacity: 1;
 }

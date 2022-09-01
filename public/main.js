@@ -6,10 +6,12 @@ const wrapper = document.querySelector("#wrapper");
 const video = document.querySelector("video");
 const cover = document.querySelector("#cover");
 const play = document.querySelector("#play");
+const progress = document.querySelector("#progress");
 
 let copyVideo = false;
+let scrubbing = false;
 
-// Loads a video from params given it's name, along with it's cover image.
+// Loads a video from params given it's name, along with its cover image.
 // Assumes its in mp4 and webp format.
 function setupVideo(url) {
   video.src = "assets/" + url + ".mp4";
@@ -22,40 +24,97 @@ function setupVideo(url) {
   video.style.maxWidth = params.width + "px";
   video.style.maxHeight = params.height + "px";
 
-  video.oncanplaythrough = () => {
-    document.body.classList.remove("loading");
-    document.body.classList.add("ready");
+  video.addEventListener(
+    "canplaythrough",
+    () => {
+      document.body.classList.remove("loading");
+      document.body.classList.add("ready");
 
-    // 1. First playback.
-    wrapper.onclick = () => {
-      video.play();
-      video.addEventListener(
-        "playing",
+      // On first playback...
+      wrapper.addEventListener(
+        "click",
         () => {
-          copyVideo = true;
-          document.body.classList.remove("ready");
-          document.body.classList.add("playing");
-          play.classList.add("played");
-
-          // 2. Pause
-          wrapper.onclick = () => {
-            if (!video.paused) {
-              video.pause();
-
-              play.classList.remove("played");
-              play.classList.add("subtle");
-
-            } else {
-              video.play();
+          video.play();
+          video.addEventListener(
+            "playing",
+            () => {
+              copyVideo = true;
+              document.body.classList.remove("ready");
+              document.body.classList.add("playing");
               play.classList.add("played");
-            }
-          };
 
+              let isDown = false;
+              let lastX;
+
+              wrapper.addEventListener("pointerdown", (e) => {
+                console.log('down');
+                if (!e.isPrimary) return;
+                isDown = true;
+                lastX = e.x;
+              });
+
+              wrapper.addEventListener("pointermove", (e) => {
+                console.log('move');
+                if (!e.isPrimary) return;
+                if (!isDown) return;
+                scrubbing = true;
+                wrapper.classList.add("scrubbing");
+                video.pause();
+
+                const deltaX = e.x - lastX;
+                lastX = e.x;
+
+                console.log(deltaX);
+
+                const currentWidth = parseFloat(progress.style.width);
+                progress.style.width = currentWidth + deltaX + "px";
+              });
+
+              wrapper.addEventListener("pointerup", (e) => {
+                console.log('up');
+                if (!e.isPrimary) return;
+                isDown = false;
+                if (scrubbing) {
+                  // Progress Scrubbing
+                  let newTime =
+                    (parseFloat(progress.style.width) / wrapper.clientWidth) *
+                    video.duration;
+                  if (newTime > video.duration) {
+                    newTime = 0;
+                  } else if (newTime < 0) {
+                    newTime = 0;
+                  }
+                  video.currentTime = newTime;
+                  scrubbing = false;
+                  if (video.paused) {
+                    video.play();
+                    document.body.classList.remove("paused");
+                    play.classList.add("played");
+                  }
+                  wrapper.classList.remove("scrubbing");
+                } else {
+                  // Play & Pause
+                  if (!video.paused) {
+                    video.pause();
+                    document.body.classList.add("paused");
+                    play.classList.remove("played");
+                    play.classList.add("subtle");
+                  } else {
+                    video.play();
+                    document.body.classList.remove("paused");
+                    play.classList.add("played");
+                  }
+                }
+              });
+            },
+            { once: true }
+          );
         },
         { once: true }
       );
-    };
-  };
+    },
+    { once: true }
+  );
 
   video.load();
   return video;
@@ -169,10 +228,21 @@ function main(provenanceLength) {
   const texture = initTexture(gl);
   const video = setupVideo(params.videoName);
 
+  let lastVideoTime = video.currentTime;
+
   const render = function () {
-    if (copyVideo && !video.paused) {
+    if (copyVideo && !video.paused && video.currentTime != lastVideoTime) {
       updateTexture(gl, texture, video);
       blur.draw(texture);
+
+      // Update the progress bar.
+      if (!scrubbing) {
+        progress.style.width =
+          Math.ceil(
+            (video.currentTime / video.duration) * wrapper.clientWidth
+          ) + "px";
+      }
+    lastVideoTime = video.currentTime;
     }
     requestAnimationFrame(render);
   };

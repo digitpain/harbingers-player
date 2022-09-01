@@ -1,13 +1,13 @@
 ***Harbingers Player***
 
 ⚙️ TODO
-- [💚] Add pause functionality.
-  - [🔵] See if the shader can be paused.
-  - [] Animate a smooth zooming pause symbol?
-  - [x] Pause and play
-- [] Add scrubbable progress bar.
-- [] Better preloader feel on the <img> tag.
 - [] Incorporate all the videos from the exhibition. 
+- [x] Better preloader feel on the <img> tag?
+- [x] Add scrubbable progress bar.
+- [x] Add pause functionality.
+  - [x] See if the shader can be paused.
+  - [x] Add a transparent play button while paused.
+  - [x] Pause and play
 - [x] Fix vertical centering issue on https://feralfile2.dev.bitmark.com/artworks/baby-video-xk5.
 - [x] Fix zooming video issue.
 - [x] Add to a repo and hook up to netlify.
