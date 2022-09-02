@@ -2,8 +2,8 @@
 
 ⚙️ TODO
 - [] Incorporate all the videos from the exhibition. 
+  - [x️] Generate a still for each video.
   - [x] Transcribe each video and add to the repo.
-  - [] Generate a still for each video.
 - [x] Add scrubbable progress bar.
 - [x] Add pause functionality.
   - [x] See if the shader can be paused.
@@ -17,11 +17,27 @@
 Using ffmpeg to extract the first frame of each video as a still:
 - `ffmpeg -i input.mp4 -vf "select=eq(n\,0)" output.webp`
 
+  ffmpeg -i artemis.mp4 -vf "select=eq(n\,0)" artemis.webp
+  ffmpeg -i designer-baby.mp4 -vf "select=eq(n\,0)" designer-baby.webp
+  ffmpeg -i ff-01.mp4 -vf "select=eq(n\,0)" ff-01.webp
+  ffmpeg -i ff-02.mp4 -vf "select=eq(n\,0)" ff-02.webp
+  ffmpeg -i hollow-ocean.mp4 -vf "select=eq(n\,0)" hollow-ocean.webp
+  ffmpeg -i icosahedron.mp4 -vf "select=eq(n\,0)" icosahedron.webp
+  ffmpeg -i les-mutants-1.mp4 -vf "select=eq(n\,0)" les-mutants-1.webp
+  ffmpeg -i les-mutants-2.mp4 -vf "select=eq(n\,0)" les-mutants-2.webp
+  ffmpeg -i les-mutants-3.mp4 -vf "select=eq(n\,0)" les-mutants-3.webp
+  ffmpeg -i lizard-king.mp4 -vf "select=eq(n\,0)" lizard-king.webp
+  ffmpeg -i ojo-dont-slip-on-the-ba-nano-peal.mp4 -vf "select=eq(n\,0)" ojo-dont-slip-on-the-ba-nano-peal.webp
+  ffmpeg -i post-pangea.mp4 -vf "select=eq(n\,0)" post-pangea.webp
+  ffmpeg -i sanctum.mp4 -vf "select=eq(n\,0)" sanctum.webp
+  ffmpeg -i tin-y-pluri.mp4 -vf "select=eq(n\,0)" tin-y-pluri.webp
+
 Using ffmpeg to transcode a video into an mp4 container.
 - `ffmpeg -i designer-baby.mov -crf 18 designer-baby.mp4`
 
 ⚠️ TEST: https://feralfile2.dev.bitmark.com/artworks/jeffrey-u6u?fromExhibition=jeffrey-multi-unique-0c7
 
+🖊️ Video file log:
 - [x] artemis.mp4 (not transcoded)
 - [x]'Designer Baby.mov' -> designer-baby.mp4
 - [x] FF_01.mp4 -> ff-01.mp4
