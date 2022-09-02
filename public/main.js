@@ -14,10 +14,10 @@ let scrubbing = false;
 // Loads a video from params given it's name, along with its cover image.
 // Assumes its in mp4 and webp format.
 function setupVideo(url) {
-  video.src = "assets/" + url + ".mp4";
+  video.src = "assets/videos/web/" + url + ".mp4";
 
   cover.onload = () => cover.classList.remove("hidden");
-  cover.src = "assets/" + url + ".webp";
+  cover.src = "assets/stills/" + url + ".webp";
 
   cover.width = params.width;
   cover.height = params.height;
