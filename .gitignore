@@ -1,4 +1,7 @@
 node_modules/
 
+# built pieces
+build/
+
 # Local Netlify folder
 .netlify

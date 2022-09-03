@@ -1,11 +1,24 @@
 ***Harbingers Player***
 
+👁️‍🗨️ Live URL: https://harbingers-player.netlify.app
+  - The raw url loads a random work.
+
+  - Add a hash to go to a specific work (see `artworks.mjs`):
+    Ex: https://harbingers-player.netlify.app/#ff-01
+
+  - Add a "?provenance=N" query parameter to test provenance levels from 0-10.
+    Ex: https://harbingers-player.netlify.app/?provenance=5#sanctum
+
 ⚙️ TODO
-- [] Write a build script that outputs a directory for each work.
-  - [] Spit the current name to a `constants.js` file.
-  - [] Add `build` directory to .gitignore.
-  - [] Include `genetically-modified-gods.pdf` with `artemis`.
-- [] Replace all black stills with stills that best represent each video.
+- [] Replace all black "webp" stills with stills that best represent each video.
+- [] Communicate somehow with native Feral File website preloader to extend
+     its duration OR design a preloader / spinner to go in front of the `webp` stills that now appear when each video is buffering.
+     
+✅ DONE
+- [x] Write a build script that outputs a directory for each work.
+  - [x] Spit the current name to the `index.html` file upon copying.
+  - [x] Add `build` directory to .gitignore.
+  - [x] Include `genetically-modified-gods.pdf` with `artemis`.
 - [x] Add "?provenance=n" query parameter. 
 - [x] Go to a random, valid hash if params is empty. 
 - [x] Add hash shortcuts for each piece.
@@ -27,12 +40,15 @@
 - [x] Fix zooming video issue.
 - [x] Add to a repo and hook up to netlify.
 
-💁 Building all pieces after cloning this repo:
+💁 
+***Building & Uploading to Feral File***
   0. Make sure `git lfs` is installed locally: https://git-lfs.github.com/.
     - Simply run `git lfs install`.
   1. Clone this repository. It should take awhile for the media files to download.
   2. Make sure `node` (and `npm`) is installed.
-  2. Run `npm build` to populate the `build` directory with zippable directories for each work.
+  3. Run `npm install` to add any dependencies.
+  4. Run `npm build` to populate the `build` directory with zippable directories for each work.
+  5. Inspect, zip and upload each directory as needed.
 
 ⚠️ Upload Test: https://feralfile2.dev.bitmark.com/artworks/jeffrey-u6u?fromExhibition=jeffrey-multi-unique-0c7
 

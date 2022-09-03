@@ -19,7 +19,7 @@ if (location.hash.length > 0) params.name = location.hash.substring(1);
 // Loads a video from params given it's name, along with its cover image.
 // Assumes its in mp4 and webp format.
 function setupVideo(url) {
-  video.src = "assets/videos/web/" + url + ".mp4";
+  video.src = "assets/web-videos/" + url + ".mp4";
 
   const imagePromise = new Promise((resolve, reject) => {
     cover.onload = () => {
