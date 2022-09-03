@@ -1,15 +1,25 @@
 // ✴️ Parameters
-// These defaults should be adjusted for each piece. 
+// This is customized for each piece's media and used acrosss other scripts. 
 
-const params = {
-  videoName: "designer-baby",
-  width: 1920 / 2, // should fetch the width of the video
-  height: 1920 / 2, // should fetch the height of the video
-  distortionAmount: 0.7542, // to be set based on the piece and transaction history
-  style: 0.7583, // to be set based on the piece and transaction history
-  mouseX: 450,
-  mouseY: 450,
-  prevMouseX: 450,
-  prevMouseY: 450,
-  displaySize: 1,
-};
+if (window.artwork.length === 0) {
+  const artworks = [
+    "artemis",
+    "designer-baby",
+    "ff-01",
+    "ff-02",
+    "hollow-ocean",
+    "icosahedron",
+    "les-mutants-1",
+    "les-mutants-2",
+    "les-mutants-3",
+    "lizard-king",
+    "ojo-dont-slip-on-the-ba-nano-peal",
+    "post-pangea",
+    "sanctum",
+    "tin-y-pluri"
+  ]
+
+  window.artwork = artworks[Math.floor(Math.random() * artworks.length)];
+}
+
+const params = { name: window.artwork };

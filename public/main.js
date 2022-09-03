@@ -2,6 +2,8 @@
 // Loads a video from `parameters` and applies the effect. Also handles the
 // playback interface.
 
+const maxProvenanceLen = 10;
+
 const wrapper = document.querySelector("#wrapper");
 const video = document.querySelector("video");
 const cover = document.querySelector("#cover");
@@ -11,23 +13,38 @@ const progress = document.querySelector("#progress");
 let copyVideo = false;
 let scrubbing = false;
 
+// Override the default set in parameters.js with any present url hash.
+if (location.hash.length > 0) params.name = location.hash.substring(1);
+
 // Loads a video from params given it's name, along with its cover image.
 // Assumes its in mp4 and webp format.
 function setupVideo(url) {
   video.src = "assets/videos/web/" + url + ".mp4";
 
-  cover.onload = () => cover.classList.remove("hidden");
+  const imagePromise = new Promise((resolve, reject) => {
+    cover.onload = () => {
+      cover.classList.remove("hidden");
+
+      params.width = Math.floor(cover.naturalWidth / 2);
+      params.height = Math.floor(cover.naturalHeight / 2);
+
+      cover.width = params.width;
+      cover.height = params.height;
+      cover.style.maxWidth = params.width + "px";
+      cover.style.maxHeight = params.height + "px";
+
+      video.width = params.width;
+      video.height = params.height;
+      video.style.maxWidth = params.width + "px";
+      video.style.maxHeight = params.height + "px";
+
+      video.load();
+
+      resolve(video);
+    };
+  });
+
   cover.src = "assets/stills/" + url + ".webp";
-
-  cover.width = params.width;
-  cover.height = params.height;
-  cover.style.maxWidth = params.width + "px";
-  cover.style.maxHeight = params.height + "px";
-
-  video.width = params.width;
-  video.height = params.height;
-  video.style.maxWidth = params.width + "px";
-  video.style.maxHeight = params.height + "px";
 
   video.addEventListener(
     "canplaythrough",
@@ -120,20 +137,19 @@ function setupVideo(url) {
     { once: true }
   );
 
-  video.load();
-  return video;
+  return imagePromise;
 }
 
 // Returns a distortion value by max distortion and provenance length.
+// A good default is 0.7542;
 function calcDistortion(maxDistortion, provenanceLength) {
-  const MAX_PROVENANCE_LENGTH = 10;
   let distortion = 0.0;
   if (provenanceLength) {
     distortion =
       0.1 +
       ((maxDistortion - 0.1) *
-        Math.min(provenanceLength - 1, MAX_PROVENANCE_LENGTH - 1)) /
-        (MAX_PROVENANCE_LENGTH - 1);
+        Math.min(provenanceLength - 1, maxProvenanceLen - 1)) /
+        (maxProvenanceLen - 1);
   }
 
   return distortion;
@@ -186,7 +202,8 @@ function updateTexture(gl, texture, video) {
   );
 }
 
-function main(provenanceLength) {
+async function main(provenanceLength) {
+  const video = await setupVideo(params.name);
   const canvas = document.getElementById("canvas");
   const gl = canvas.getContext("webgl2");
   if (!gl) {
@@ -197,16 +214,13 @@ function main(provenanceLength) {
   canvas.width = params.width;
   canvas.height = params.height;
 
-  params.distortionAmount = calcDistortion(
-    params.distortionAmount,
-    provenanceLength
-  );
+  params.distortionAmount = calcDistortion(0.7542, provenanceLength);
 
   function updateDisplaySize() {
-    let strW = parseInt(params.width * params.displaySize);
+    let strW = parseInt(params.width);
     canvas.style.width = strW + "px";
     canvas.style.maxWidth = strW + "px";
-    let strH = parseInt(params.height * params.displaySize);
+    let strH = parseInt(params.height);
     canvas.style.height = strH + "px";
     canvas.style.maxHeight = strH + "px";
   }
@@ -230,7 +244,6 @@ function main(provenanceLength) {
   blur.setTexture(createInitTexture());
 
   const texture = initTexture(gl);
-  const video = setupVideo(params.videoName);
 
   let lastVideoTime = video.currentTime;
 
@@ -255,11 +268,20 @@ function main(provenanceLength) {
 }
 
 window.addEventListener("provenance-request-error", function (event) {
+  const provParam = new URLSearchParams(window.location.search).get(
+    "provenance"
+  );
+
+  let testingLength = 3;
+  if (provParam)
+    testingLength = Math.min(parseInt(provParam), maxProvenanceLen);
+
   console.warn(
-    "Failed to get provenance, testing with provenance length of 3...",
+    `Failed to get provenance, testing with provenance length of ${testingLength}...`, "Max provenance length: ", maxProvenanceLen,
     event
   );
-  main(3);
+
+  main(testingLength);
 });
 
 window.addEventListener("provenance-ready", function (event) {

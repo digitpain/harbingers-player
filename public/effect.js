@@ -3,6 +3,8 @@
 
 const glsl = (x) => x;
 
+const style = 0.7583;
+
 const passthroughFrag = glsl`\
   #version 300 es
   precision highp float;
@@ -341,16 +343,8 @@ class Blur {
       this.gl.uniform1i(this.updateProgramLocations.uniform.uVideoTex, 2);
 
       this.gl.uniform1i(this.updateProgramLocations.frameNum, this.frameNum);
-      this.gl.uniform2f(
-        this.gu(this.updateBlur, "mouse"),
-        this.params.mouseX,
-        this.params.mouseY
-      );
-      this.gl.uniform2f(
-        this.gu(this.updateBlur, "prevMouse"),
-        this.params.prevMouseX,
-        this.params.prevMouseY
-      );
+      this.gl.uniform2f(this.gu(this.updateBlur, "mouse"), 450, 450);
+      this.gl.uniform2f(this.gu(this.updateBlur, "prevMouse"), 450, 450);
       this.gl.uniform2f(
         this.gu(this.updateBlur, "uTextureSize"),
         this.params.width,
@@ -362,7 +356,7 @@ class Blur {
         this.gu(this.updateBlur, "distortionAmount"),
         this.params.distortionAmount
       );
-      this.gl.uniform1f(this.gu(this.updateBlur, "style"), this.params.style);
+      this.gl.uniform1f(this.gu(this.updateBlur, "style"), style);
 
       this.gl.viewport(0, 0, this.params.width, this.params.height);
       this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -391,7 +385,7 @@ class Blur {
     );
     this.gl.uniform1f(
       this.drawProgramLocations.uniform.style,
-      this.params.style
+      style
     );
     this.gl.uniform1i(
       this.drawProgramLocations.uniform.frameNum,
