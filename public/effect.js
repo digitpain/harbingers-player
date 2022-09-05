@@ -3,8 +3,6 @@
 
 const glsl = (x) => x;
 
-const style = 0.7583;
-
 const passthroughFrag = glsl`\
   #version 300 es
   precision highp float;
@@ -356,7 +354,7 @@ class Blur {
         this.gu(this.updateBlur, "distortionAmount"),
         this.params.distortionAmount
       );
-      this.gl.uniform1f(this.gu(this.updateBlur, "style"), style);
+      this.gl.uniform1f(this.gu(this.updateBlur, "style"), this.params.style);
 
       this.gl.viewport(0, 0, this.params.width, this.params.height);
       this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -385,7 +383,7 @@ class Blur {
     );
     this.gl.uniform1f(
       this.drawProgramLocations.uniform.style,
-      style
+      this.params.style
     );
     this.gl.uniform1i(
       this.drawProgramLocations.uniform.frameNum,

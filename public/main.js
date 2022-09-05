@@ -2,6 +2,8 @@
 // Loads a video from `parameters` and applies the effect. Also handles the
 // playback interface.
 
+import { artworks, artworkParameters } from "./artworks.mjs";
+
 const maxProvenanceLen = 10;
 
 const wrapper = document.querySelector("#wrapper");
@@ -13,8 +15,29 @@ const progress = document.querySelector("#progress");
 let copyVideo = false;
 let scrubbing = false;
 
-// Override the default set in parameters.js with any present url hash.
-if (location.hash.length > 0) params.name = location.hash.substring(1);
+// If we input a hash, use that to set the artwork name.
+if (location.hash.length > 0) {
+  if (artworks.indexOf(location.hash.substring(1)) > -1) {
+    window.artwork = location.hash.substring(1);
+  } else {
+    console.warn(
+      "Invalid hash / piece not found: ",
+      location.hash.substring(1)
+    );
+    console.warn("Routing to:", artworks[0]);
+    window.artwork = artworks[0];
+  }
+} else if (window.artwork.length === 0) {
+  // If nothing has been hardcoded from `index.html`, then pick a random piece.
+  window.artwork = artworks[Math.floor(Math.random() * artworks.length)];
+}
+
+// Add piece-specific data parameters for the effect.
+window.params = {
+  name: window.artwork,
+  style: artworkParameters[window.artwork][0],
+  maxDistortion: artworkParameters[window.artwork][1],
+};
 
 // Loads a video from params given it's name, along with its cover image.
 // Assumes its in mp4 and webp format.
@@ -214,7 +237,10 @@ async function main(provenanceLength) {
   canvas.width = params.width;
   canvas.height = params.height;
 
-  params.distortionAmount = calcDistortion(0.7542, provenanceLength);
+  params.distortionAmount = calcDistortion(
+    params.maxDistortion,
+    provenanceLength
+  );
 
   function updateDisplaySize() {
     let strW = parseInt(params.width);
@@ -230,15 +256,7 @@ async function main(provenanceLength) {
   const blur = new Blur(gl, params);
 
   const createInitTexture = function () {
-    let uvTexture = [];
-    for (let i = 0; i < params.width; i++) {
-      for (let j = 0; j < params.height; j++) {
-        u = 0;
-        v = 0;
-        uvTexture.push(u, v);
-      }
-    }
-    return new Float32Array(uvTexture);
+    return new Float32Array(params.width * params.height * 4);
   };
 
   blur.setTexture(createInitTexture());
@@ -268,6 +286,8 @@ async function main(provenanceLength) {
 }
 
 window.addEventListener("provenance-request-error", function (event) {
+  // Check to see if a provenance value is available in the URL, upon
+  // failure. (Testing purposes only)
   const provParam = new URLSearchParams(window.location.search).get(
     "provenance"
   );
@@ -277,7 +297,9 @@ window.addEventListener("provenance-request-error", function (event) {
     testingLength = Math.min(parseInt(provParam), maxProvenanceLen);
 
   console.warn(
-    `Failed to get provenance, testing with provenance length of ${testingLength}...`, "Max provenance length: ", maxProvenanceLen,
+    `Failed to get provenance, testing with provenance length of ${testingLength}...`,
+    "Max provenance length: ",
+    maxProvenanceLen,
     event
   );
 

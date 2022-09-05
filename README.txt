@@ -10,13 +10,14 @@
     Ex: https://harbingers-player.netlify.app/?provenance=5#sanctum
 
 ⚙️ TODO
-- [] Prepopulate 'style' and 'max distortion' values for each work using
-     the data from the artist submitted ZIP files.
 - [] Replace all black "webp" stills with stills that best represent each video.
 - [] Communicate somehow with native Feral File website preloader to extend
      its duration OR design a preloader / spinner to go in front of the `webp` stills that now appear when each video is buffering.
      
 ✅ DONE
+- [x] Fix webGL texture initialization error.
+- [x] Prepopulate 'style' and 'max distortion' values for each work using
+     the data from the artist submitted ZIP files.
 - [x] Write a build script that outputs a directory for each work.
   - [x] Spit the current name to the `index.html` file upon copying.
   - [x] Add `build` directory to .gitignore.
