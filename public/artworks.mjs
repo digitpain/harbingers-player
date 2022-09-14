@@ -31,5 +31,5 @@ export const artworkParameters = {
     [0.3796, 0.9947],
   "post-pangea": [0.2222, 1],
   sanctum: [1, 0.99],
-  "tin-y-pluri": [0.8470, 0.9771],
+  "tin-y-pluri": [0.8740, 0.9771],
 };
