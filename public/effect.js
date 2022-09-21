@@ -149,10 +149,6 @@ const blurFrag = glsl`\
 
       vec2 posInPixels = vec2(vTexCoord.x, 1.-vTexCoord.y) * uTextureSize;
 
-      if (minimum_distance(mouse, prevMouse, posInPixels) < mouseSize) {
-        average = vec4(1.);
-      }
-
       vec4 videoColor = texture(uVideoTex, vec2(vTexCoord.x, 1.-vTexCoord.y));
 
       float newAmount = mix(1.0, 0.001, clamp(distortionAmount, 0., 1.));
