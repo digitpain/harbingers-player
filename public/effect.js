@@ -1,5 +1,5 @@
 // Effect
-// A deteriorating glsl effect created by @mxsage.
+// A deteriorating glsl effect
 
 const glsl = (x) => x;
 
@@ -70,7 +70,7 @@ const drawFrag = glsl`\
 
     vec2 gradient = vec2(
         avgComponent(texture(uDrawTex, vTexCoord + vec2(onePixel.x, 0.))) - avgComponent(texture(uDrawTex, vTexCoord - vec2(onePixel.x, 0.))),
-        avgComponent(texture(uDrawTex, vTexCoord + vec2(0., onePixel.y)))- avgComponent(texture(uDrawTex, vTexCoord - vec2(0., onePixel.y))));
+        avgComponent(texture(uDrawTex, vTexCoord + vec2(0., onePixel.y))) - avgComponent(texture(uDrawTex, vTexCoord - vec2(0., onePixel.y))));
 
     blurCol.xyz *= clamp(pow(mix(1., clamp(1. - pow(length(gradient), .4), 0., 1.), mix(pow(distortionAmount*1.4, 4.2), distortionAmount, style)), .5), .1, 1.);
     outColor = vec4(blurCol.xyz, 1.);
@@ -96,15 +96,6 @@ const blurFrag = glsl`\
   in vec2 vTexCoord;
   out vec4 outState;
 
-  float minimum_distance(vec2 v, vec2 w, vec2 p) {
-    // Return minimum distance between line segment vw and point p
-    float l2 = pow(distance(v, w), 2.);  // i.e. |w-v|^2 -  avoid a sqrt
-    if (l2 == 0.0) return distance(p, v);   // v == w case
-    float t = max(0., min(1., dot(p - v, w - v) / l2));
-    vec2 projection = v + t * (w - v);
-    return distance(p, projection);
-  }
-
   float maxComponent(vec3 c) { return max(max(c.x, c.y), c.z); }
   float avgComponent(vec3 c) { return (c.x + c.y + c.z) / 3.; }
   float avgComponent(vec4 c) { return maxComponent(c.xyz); }
@@ -123,7 +114,6 @@ const blurFrag = glsl`\
 
     if (blur == 1) {
       vec4 average = selfCol;
-      //onePixel *= pow(selfBrightness, 2.2) * distortionAmount;
 
       float dec_x = vTexCoord.x - onePixel.x;
       float inc_x = vTexCoord.x + onePixel.x;
@@ -145,8 +135,6 @@ const blurFrag = glsl`\
       average += texture(uUpdateTex, vec2(p_inc_x, p_inc_y));
       average /= 9.;
 
-      float mouseSize = 1.;
-
       vec2 posInPixels = vec2(vTexCoord.x, 1.-vTexCoord.y) * uTextureSize;
 
       vec4 videoColor = texture(uVideoTex, vec2(vTexCoord.x, 1.-vTexCoord.y));
@@ -154,11 +142,7 @@ const blurFrag = glsl`\
       float newAmount = mix(1.0, 0.001, clamp(distortionAmount, 0., 1.));
       vec4 blurColor =  average * (1. - newAmount) + videoColor * newAmount;
       outState = vec4(blurColor.xyz, average.w);
-      //outState = max(blurColor, videoColor);
       outState.w = average.w;
-      //outState = vec4(selfCol.xyz, average.w);
-      //outState = vec4(average.xyz, selfCol.w);
-      //outState = average;
     } else {
       onePixel *= r * mix(0.05, 200.*r, pow(style, 10.0)) * distortionAmount;
       vec2 gradient = vec2(
